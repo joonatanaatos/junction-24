@@ -93,6 +93,9 @@ function App() {
     const newData = [...data];
     newData[entryIndex][field] = value;
     setData(newData);
+    setTimeout(() => {
+      alert('There have been changes to your issue!');
+    }, 3000);
   };
 
   return (
