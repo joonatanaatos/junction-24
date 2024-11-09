@@ -1,34 +1,45 @@
 import './App.css';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import defaultData from './default-data.json';
 import { useState } from 'react';
 
+type FingridData = Record<string, string>;
+
+const useLocalStorage = <T,>(key: string, defaultValue: T) => {
+  const [value, setValue] = useState<T>(() => {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : defaultValue;
+  });
+
+  const setStoredValue = (newValue: T) => {
+    setValue(newValue);
+    localStorage.setItem(key, JSON.stringify(newValue));
+  };
+
+  return [value, setStoredValue] as const;
+};
+
 function App() {
-  const [count, setCount] = useState(0);
+  const [data, setData] = useLocalStorage<FingridData[]>(
+    'fingridData',
+    defaultData as unknown as FingridData[],
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Fingrid Data</h1>
+      <div className="grid grid-cols-1 gap-4">
+        {data.map((entry, index) => (
+          <div key={index} className="p-4 border rounded shadow">
+            {Object.entries(entry).map(([key, value]) => (
+              <div key={key} className="mb-2">
+                <span className="font-semibold">{key}: </span>
+                <span>{value}</span>
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
 
