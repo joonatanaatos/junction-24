@@ -12,6 +12,9 @@ const useLocalStorage = <T,>(key: string, defaultValue: T) => {
   const setStoredValue = (newValue: T) => {
     setValue(newValue);
     localStorage.setItem(key, JSON.stringify(newValue));
+    setTimeout(() => {
+      alert('There have been changes to your issue!');
+    }, 3000);
   };
 
   return [value, setStoredValue] as const;
@@ -93,9 +96,19 @@ function App() {
     const newData = [...data];
     newData[entryIndex][field] = value;
     setData(newData);
-    setTimeout(() => {
-      alert('There have been changes to your issue!');
-    }, 3000);
+  };
+
+  const createNewItem = () => {
+    const newItem: FingridData = allFields.reduce((acc, field) => {
+      acc[field] = '';
+      return acc;
+    }, {} as FingridData);
+    setData([newItem, ...data]);
+  };
+
+  const deleteItem = (index: number) => {
+    const newData = data.filter((_, i) => i !== index);
+    setData(newData);
   };
 
   return (
@@ -110,6 +123,12 @@ function App() {
         </h1>
       </div>
       <div className="mb-4">
+        <button
+          onClick={createNewItem}
+          className="p-2 border rounded bg-green-500 text-white mb-4"
+        >
+          Create New Item
+        </button>
         {filters.map((filter, index) => (
           <div key={index} className="flex gap-2 mb-2">
             <select
@@ -158,6 +177,12 @@ function App() {
               onClick={() => toggleExpand(index)}
             >
               {expandedIndex === index ? 'Show Less' : 'Show More'}
+            </button>
+            <button
+              onClick={() => deleteItem(index)}
+              className="text-red-500 underline m-3 float-right"
+            >
+              Delete
             </button>
             {Object.entries(entry).map(([key, value]) => {
               if (
