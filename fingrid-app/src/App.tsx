@@ -83,7 +83,7 @@ function App() {
     'Asiakastoimikunnan/Kehitysty\u00f6ryhm\u00e4n etenemissuositus\nRecommendation from CC/DWG',
     'K\u00e4sittelyn etenemissuunnitelma\nNext steps',
   ];
-  const importantFields = ['Kehitysehdotus', 'Nostopäiväys', 'Prioriteetti'];
+  const importantFields = ['Kehitysehdotus', 'Tila', 'Prioriteetti'];
 
   const handleFieldBlur = (
     entryIndex: number,
