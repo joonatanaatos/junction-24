@@ -1,4 +1,3 @@
-import './App.css';
 import defaultData from './default-data.json';
 import { useState } from 'react';
 
@@ -26,7 +25,9 @@ function App() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Fingrid Data</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        Fingrid Development Management System
+      </h1>
       <div className="grid grid-cols-1 gap-4">
         {data.map((entry, index) => (
           <div key={index} className="p-4 border rounded shadow">
