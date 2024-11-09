@@ -85,6 +85,16 @@ function App() {
   ];
   const importantFields = ['Kehitysehdotus', 'Nostopäiväys', 'Prioriteetti'];
 
+  const handleFieldBlur = (
+    entryIndex: number,
+    field: string,
+    value: string,
+  ) => {
+    const newData = [...data];
+    newData[entryIndex][field] = value;
+    setData(newData);
+  };
+
   return (
     <div className="p-4">
       <div className="w-full flex flex-col items-center gap-3 p-3">
@@ -156,7 +166,17 @@ function App() {
               return (
                 <div key={key} className="mb-2">
                   <span className="font-semibold">{key}: </span>
-                  <span>{value}</span>
+                  {expandedIndex === index ? (
+                    <textarea
+                      defaultValue={value}
+                      onBlur={(e) =>
+                        handleFieldBlur(index, key, e.target.value)
+                      }
+                      className="p-1 border rounded w-full"
+                    />
+                  ) : (
+                    <span>{value}</span>
+                  )}
                 </div>
               );
             })}
