@@ -35,6 +35,12 @@ function App() {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
+  const [sortedby, setSortedby] = useState("");
+
+  const handleSortChange = (field: string) => {
+    setSortedby(field);
+  };
+
   const handleFilterChange = (index: number, field: string, value: string) => {
     const newFilters = [...filters];
     newFilters[index] = { field, value };
@@ -123,6 +129,22 @@ function App() {
         </h1>
       </div>
       <div className="mb-4">
+        <select
+          value={sortedby}
+          onChange={(e) =>
+            handleSortChange(e.target.value)
+          }
+          className="p-2 border rounded"
+        >
+          <option value="">Sort by</option>
+          {allFields.map((field) => (
+            <option key={field} value={field}>
+              {field}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="mb-4">
         <button
           onClick={createNewItem}
           className="p-2 border rounded bg-green-500 text-white mb-4"
@@ -170,7 +192,7 @@ function App() {
         </button>
       </div>
       <div className="grid grid-cols-1 gap-4">
-        {filteredData.map((entry, index) => (
+        {filteredData.sort((a, b) => a[sortedby] > b[sortedby] ? 1 : -1).map((entry, index) => (
           <div key={index} className="p-4 border rounded shadow">
             <button
               className="text-blue-500 underline m-3 float-right"
